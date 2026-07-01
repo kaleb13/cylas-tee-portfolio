@@ -184,20 +184,22 @@ export default function FluidCanvas() {
     const displaySrc = `
       precision highp float; precision highp sampler2D;
       varying vec2 vUv; varying vec2 vL; varying vec2 vR; varying vec2 vT; varying vec2 vB;
-      uniform sampler2D uTexture; uniform vec2 texelSize;
-      vec3 linearToGamma(vec3 c){ c=max(c,vec3(0)); return max(1.055*pow(c,vec3(0.416666667))-0.055,vec3(0)); }
+      uniform sampler2D uTexture; 
+      uniform sampler2D uVelocity;
+      uniform sampler2D uContent;
+      uniform float uDistortion;
+      uniform vec2 texelSize;
       void main(){
-        vec3 c=texture2D(uTexture,vUv).rgb;
-        #ifdef SHADING
-          vec3 lc=texture2D(uTexture,vL).rgb; vec3 rc=texture2D(uTexture,vR).rgb;
-          vec3 tc=texture2D(uTexture,vT).rgb; vec3 bc=texture2D(uTexture,vB).rgb;
-          float dx=length(rc)-length(lc); float dy=length(tc)-length(bc);
-          vec3 n=normalize(vec3(dx,dy,length(texelSize)));
-          float diffuse=clamp(dot(n,vec3(0,0,1))+0.7,0.7,1.0);
-          c*=diffuse;
-        #endif
-        float a=max(c.r,max(c.g,c.b));
-        gl_FragColor=vec4(c,a);
+        vec2 vel = texture2D(uVelocity, vUv).xy;
+        vec2 displacedUv = vUv - vel * uDistortion;
+        displacedUv = clamp(displacedUv, 0.0, 1.0);
+        
+        vec4 content = texture2D(uContent, displacedUv);
+        vec3 smoke = texture2D(uTexture, displacedUv).rgb;
+        
+        // Additive blend of gold smoke on top of distorted content
+        vec3 finalColor = content.rgb + smoke * 0.25;
+        gl_FragColor = vec4(finalColor, content.a);
       }`;
 
     const splatFS = compileShader(GL.FRAGMENT_SHADER, `
@@ -467,13 +469,151 @@ export default function FluidCanvas() {
     };
 
     // ── render ────────────────────────────────────────────────────────────────
+    // ── content texture & offscreen drawing ───────────────────────────────────
+    const offscreenCanvas = typeof window !== "undefined" ? document.createElement("canvas") : null;
+    const offctx = offscreenCanvas ? offscreenCanvas.getContext("2d") : null;
+    let contentTex = GL.createTexture()!;
+    GL.bindTexture(GL.TEXTURE_2D, contentTex);
+    GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MIN_FILTER, GL.LINEAR);
+    GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MAG_FILTER, GL.LINEAR);
+    GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_S, GL.CLAMP_TO_EDGE);
+    GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_T, GL.CLAMP_TO_EDGE);
+
+    const wrapText = (ctx: CanvasRenderingContext2D, text: string, x: number, y: number, maxWidth: number, lineHeight: number) => {
+      const words = text.split(/\s+/);
+      let line = "";
+      let currentY = y;
+      for (let n = 0; n < words.length; n++) {
+        let testLine = line + words[n] + " ";
+        let metrics = ctx.measureText(testLine);
+        let testWidth = metrics.width;
+        if (testWidth > maxWidth && n > 0) {
+          ctx.fillText(line.trim(), x, currentY);
+          line = words[n] + " ";
+          currentY += lineHeight;
+        } else {
+          line = testLine;
+        }
+      }
+      ctx.fillText(line.trim(), x, currentY);
+    };
+
+    const img = typeof window !== "undefined" ? new Image() : null;
+    if (img) {
+      img.src = "/cylas-tee.png";
+    }
+
+    const updateContent = () => {
+      if (!offctx || !offscreenCanvas) return;
+      const w = canvas.width;
+      const h = canvas.height;
+      if (w === 0 || h === 0) return;
+
+      offscreenCanvas.width = w;
+      offscreenCanvas.height = h;
+
+      // 1. Background
+      offctx.fillStyle = "#0B1014";
+      offctx.fillRect(0, 0, w, h);
+
+      const scale = w / canvas.clientWidth;
+      const clientW = canvas.clientWidth;
+      const clientH = canvas.clientHeight;
+
+      // 2. Watermark
+      const watermarkFontSize = Math.max(120, Math.min(clientW * 0.3, 380)) * scale;
+      offctx.font = `700 ${watermarkFontSize}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
+      offctx.fillStyle = "rgba(255, 255, 255, 0.05)";
+      offctx.textAlign = "center";
+      offctx.textBaseline = "middle";
+      offctx.fillText("Cylas Tee", w / 2, h / 2);
+
+      // 3. Person Image
+      const imgContainer = document.getElementById("hero-image");
+      const hero = document.getElementById("home");
+
+      if (img && img.complete) {
+        let imgX = 0, imgY = 0, imgW = 0, imgH = 0;
+        if (hero && imgContainer) {
+          const heroRect = hero.getBoundingClientRect();
+          const imgRect = imgContainer.getBoundingClientRect();
+          imgX = (imgRect.left - heroRect.left) * scale;
+          imgY = (imgRect.top - heroRect.top) * scale;
+          imgW = imgRect.width * scale;
+          imgH = imgRect.height * scale;
+        } else {
+          imgW = Math.min(600, clientW) * scale;
+          imgH = imgW * (900 / 680);
+          imgX = (w - imgW) / 2;
+          imgY = h - imgH;
+        }
+        offctx.drawImage(img, imgX, imgY, imgW, imgH);
+      }
+
+      // 4. Title Text
+      const titleEl = document.getElementById("hero-title");
+      if (titleEl) {
+        const heroRect = hero ? hero.getBoundingClientRect() : { left: 0, top: 0 };
+        const titleRect = titleEl.getBoundingClientRect();
+        const titleX = (titleRect.left - heroRect.left) * scale;
+        const titleY = (titleRect.top - heroRect.top) * scale;
+        const titleW = titleRect.width * scale;
+
+        const titleStyle = window.getComputedStyle(titleEl);
+        const fontSize = parseFloat(titleStyle.fontSize) * scale;
+        
+        offctx.font = `normal ${fontSize}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
+        offctx.fillStyle = "#ffffff";
+        offctx.textAlign = "left";
+        offctx.textBaseline = "top";
+
+        const text = titleEl.textContent || "Create Your Website Today";
+        const lineHeight = fontSize * 1.15;
+        wrapText(offctx, text, titleX, titleY, titleW, lineHeight);
+      }
+
+      // 5. Upload to WebGL Content Texture
+      GL.pixelStorei(GL.UNPACK_FLIP_Y_WEBGL, true);
+      GL.bindTexture(GL.TEXTURE_2D, contentTex);
+      GL.texImage2D(GL.TEXTURE_2D, 0, GL.RGBA, GL.RGBA, GL.UNSIGNED_BYTE, offscreenCanvas);
+    };
+
+    let isMounted = true;
+    if (img) {
+      img.onload = () => {
+        if (isMounted) updateContent();
+      };
+    }
+
+    if (typeof document !== "undefined" && document.fonts) {
+      document.fonts.ready.then(() => {
+        if (isMounted) updateContent();
+      });
+    }
+
+    // ── render ────────────────────────────────────────────────────────────────
     const render = () => {
       GL.blendFunc(GL.ONE, GL.ONE_MINUS_SRC_ALPHA);
       GL.enable(GL.BLEND);
       const dp = config.SHADING ? dispProgShading : dispProgFlat;
       GL.useProgram(dp.p);
-      if (config.SHADING) GL.uniform2f(dp.u.texelSize, 1/GL.drawingBufferWidth, 1/GL.drawingBufferHeight);
+      
+      // Bind dye texture to unit 0
       GL.uniform1i(dp.u.uTexture, dye.read.attach(0));
+
+      // Bind velocity texture to unit 1
+      GL.uniform1i(dp.u.uVelocity, velocity.read.attach(1));
+
+      // Bind content texture to unit 2
+      GL.activeTexture(GL.TEXTURE0 + 2);
+      GL.bindTexture(GL.TEXTURE_2D, contentTex);
+      GL.uniform1i(dp.u.uContent, 2);
+
+      // Distortion strength
+      GL.uniform1f(dp.u.uDistortion, 0.00015);
+
+      if (config.SHADING) GL.uniform2f(dp.u.texelSize, 1/GL.drawingBufferWidth, 1/GL.drawingBufferHeight);
+      
       blit(null);
     };
 
@@ -503,7 +643,6 @@ export default function FluidCanvas() {
       lastTime = now;
 
       if (resizeCanvas()) {
-        // reinit FBOs on resize
         const sR = getResolution(config.SIM_RESOLUTION);
         const dR = getResolution(config.DYE_RESOLUTION);
         dye      = createDoubleFBO(dR.width, dR.height, rgba.internalFormat, rgba.format, halfFloatTexType, filtering);
@@ -511,6 +650,7 @@ export default function FluidCanvas() {
         divergence = createFBO(sR.width, sR.height, r.internalFormat, r.format, halfFloatTexType, GL.NEAREST);
         curl       = createFBO(sR.width, sR.height, r.internalFormat, r.format, halfFloatTexType, GL.NEAREST);
         pressure   = createDoubleFBO(sR.width, sR.height, r.internalFormat, r.format, halfFloatTexType, GL.NEAREST);
+        updateContent();
       }
 
       if (pointer.moved) {
@@ -523,6 +663,7 @@ export default function FluidCanvas() {
     };
 
     resizeCanvas();
+    updateContent();
     loop();
 
     // ── mouse / touch events ──────────────────────────────────────────────────
@@ -547,14 +688,15 @@ export default function FluidCanvas() {
       updatePointer(t.clientX - rect.left, t.clientY - rect.top);
     };
 
-    // Attach to window so it fires even when cursor is over other elements
     window.addEventListener("mousemove", onMouseMove);
     window.addEventListener("touchmove", onTouchMove, { passive: true });
 
     return () => {
+      isMounted = false;
       cancelAnimationFrame(animId);
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("touchmove", onTouchMove);
+      GL.deleteTexture(contentTex);
     };
   }, []);
 
@@ -562,7 +704,6 @@ export default function FluidCanvas() {
     <canvas
       ref={canvasRef}
       className="absolute inset-0 w-full h-full pointer-events-none"
-      style={{ mixBlendMode: "screen" }}
       aria-hidden="true"
     />
   );

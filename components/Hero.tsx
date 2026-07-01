@@ -16,9 +16,10 @@ export default function Hero() {
       {/* WebGL fluid smoke — reacts to mouse */}
       <FluidCanvas />
 
-      {/* Watermark */}
+      {/* Watermark (invisible in DOM, rendered in WebGL) */}
       <div
         className="absolute inset-0 flex items-center justify-center select-none pointer-events-none overflow-hidden"
+        style={{ opacity: 0 }}
         aria-hidden="true"
       >
         <span
@@ -35,10 +36,11 @@ export default function Hero() {
         </span>
       </div>
 
-      {/* Person image — centered, anchored to bottom */}
+      {/* Person image container (invisible in DOM, rendered and distorted in WebGL) */}
       <div
+        id="hero-image"
         className="absolute bottom-0 left-1/2 -translate-x-1/2 pointer-events-none"
-        style={{ width: "600px" }}
+        style={{ width: "600px", opacity: 0 }}
       >
         <Image
           src="/cylas-tee.png"
@@ -56,8 +58,9 @@ export default function Hero() {
         style={{ padding: "0 48px 200px 48px", maxWidth: "420px" }}
       >
         <h1
+          id="hero-title"
           className="font-normal leading-tight mb-5 text-white"
-          style={{ fontSize: "clamp(32px, 3.8vw, 46px)" }}
+          style={{ fontSize: "clamp(32px, 3.8vw, 46px)", opacity: 0 }}
         >
           Create Your Website Today
         </h1>
