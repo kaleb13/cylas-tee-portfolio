@@ -4,9 +4,7 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 
-const ParticleBackground = dynamic(() => import("./ParticleBackground"), {
-  ssr: false,
-});
+const FluidCanvas = dynamic(() => import("./FluidCanvas"), { ssr: false });
 
 export default function Hero() {
   return (
@@ -15,8 +13,8 @@ export default function Hero() {
       className="relative w-full"
       style={{ height: "110vh", backgroundColor: "#0B1014" }}
     >
-      {/* Smoke animation */}
-      <ParticleBackground />
+      {/* WebGL fluid smoke — reacts to mouse */}
+      <FluidCanvas />
 
       {/* Watermark */}
       <div
