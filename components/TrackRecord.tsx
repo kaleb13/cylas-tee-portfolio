@@ -58,8 +58,8 @@ export default function TrackRecord() {
             href="https://www.upwork.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-white text-sm hover:text-[#AE8C3C] transition-colors"
-            style={{ borderBottom: "1px solid white", paddingBottom: "2px" }}
+            className="inline-flex items-center gap-2 text-white text-sm hover:text-[#AE8C3C] link-hover-gold"
+            style={{ paddingBottom: "2px" }}
           >
             See Upwork Profile
             <Image src="/arrow.svg" alt="" width={14} height={14} />

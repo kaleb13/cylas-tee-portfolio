@@ -13,16 +13,38 @@
 
 html {
   scroll-behavior: smooth;
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE/Edge */
+}
+
+html::-webkit-scrollbar {
+  display: none;                /* Chrome/Safari/Opera */
 }
 
 body {
   background-color: var(--bg);
   color: #fff;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 300;
   overflow-x: hidden;
+}
+
+/* ── Global link reset ──────────────────────────────────────────────────────── */
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
 ::selection {
   background: var(--gold);
   color: #000;
+}
+
+/* Service cards — gold border glow on hover */
+.service-card {
+  transition: border-color 0.35s ease, box-shadow 0.35s ease !important;
+}
+.service-card:hover {
+  border-color: rgba(174, 140, 60, 0.40) !important;
+  box-shadow: 0 0 40px rgba(174, 140, 60, 0.07);
 }

@@ -1,9 +1,10 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import Image from "next/image";
-import Link from "next/link";
+import dynamic from "next/dynamic";
+import SiteLink from "./SiteLink";
 
+// Load FluidCanvas client-side only (WebGL)
 const FluidCanvas = dynamic(() => import("./FluidCanvas"), { ssr: false });
 
 export default function Hero() {
@@ -13,14 +14,14 @@ export default function Hero() {
       className="relative w-full"
       style={{ height: "110vh", backgroundColor: "#0B1014" }}
     >
-      {/* WebGL fluid smoke — reacts to mouse */}
+      {/* Fluid distortion overlay — absolute within section so it scrolls naturally */}
       <FluidCanvas />
 
-      {/* Watermark (invisible in DOM, rendered in WebGL) */}
+      {/* Watermark */}
       <div
         className="absolute inset-0 flex items-center justify-center select-none pointer-events-none overflow-hidden"
-        style={{ opacity: 0 }}
         aria-hidden="true"
+        style={{ opacity: 0 }}
       >
         <span
           style={{
@@ -36,26 +37,32 @@ export default function Hero() {
         </span>
       </div>
 
-      {/* Person image container (invisible in DOM, rendered and distorted in WebGL) */}
+      {/* Person image — centered, anchored to bottom */}
       <div
         id="hero-image"
         className="absolute bottom-0 left-1/2 -translate-x-1/2 pointer-events-none"
-        style={{ width: "600px", opacity: 0 }}
+        style={{
+          height: "calc(110vh - 110px)",
+          maxHeight: "800px",
+          maxWidth: "min(600px, 65vw)",
+          aspectRatio: "680 / 900",
+          opacity: 0,
+        }}
       >
         <Image
           src="/cylas-tee.png"
           alt="Cylas Tee"
-          width={680}
-          height={900}
-          className="w-full h-auto object-contain object-bottom"
+          width={600}
+          height={794}
+          className="w-full h-full object-contain object-bottom"
           priority
         />
       </div>
 
-      {/* Left text block — lower left, wider, bigger description */}
+      {/* Left text block — z-10 keeps it above the FluidCanvas */}
       <div
         className="absolute left-0 bottom-0 z-10 flex flex-col"
-        style={{ padding: "0 48px 200px 48px", maxWidth: "420px" }}
+        style={{ padding: "0 48px 200px 48px", maxWidth: "420px", zIndex: 10 }}
       >
         <h1
           id="hero-title"
@@ -71,14 +78,9 @@ export default function Hero() {
           Helping Individuals Increase Their Online Reach &amp; Presence.
           Starting With Their Personal Brand Website.
         </p>
-        <Link
-          href="#services"
-          className="inline-flex items-center gap-2 text-white text-sm hover:text-[#AE8C3C] transition-colors self-start"
-          style={{ borderBottom: "1px solid rgba(255,255,255,0.5)", paddingBottom: "3px" }}
-        >
-          Browse service
-          <Image src="/arrow.svg" alt="" width={14} height={14} />
-        </Link>
+        <SiteLink href="#services" theme="light">
+          Browse Services
+        </SiteLink>
       </div>
     </section>
   );

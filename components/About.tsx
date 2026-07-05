@@ -39,8 +39,8 @@ export default function About() {
 
       <Link
         href="#contact"
-        className="inline-flex items-center gap-2 text-white text-sm hover:opacity-70 transition-opacity"
-        style={{ borderBottom: "1px solid rgba(255,255,255,0.6)", paddingBottom: "3px" }}
+        className="inline-flex items-center gap-2 text-white text-sm link-hover-white"
+        style={{ paddingBottom: "3px" }}
       >
         More About Cylas Tee
         <Image src="/arrow.svg" alt="" width={14} height={14} />

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import CustomScrollbar from "@/components/CustomScrollbar";
 
 export const metadata: Metadata = {
   title: "Cylas Tee – Personal Brand Website Builder",
@@ -14,7 +15,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        {children}
+        <CustomScrollbar />
+      </body>
     </html>
   );
 }

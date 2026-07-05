@@ -1,6 +1,8 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import GoldenExpand from "@/components/GoldenExpand";
+import Services from "@/components/Services";
+import Testimonials from "@/components/Testimonials";
 
 export default function Home() {
   return (
@@ -8,6 +10,11 @@ export default function Home() {
       <Navbar />
       <Hero />
       <GoldenExpand />
+      <Services />
+      <Testimonials />
     </main>
   );
 }
+
+
+

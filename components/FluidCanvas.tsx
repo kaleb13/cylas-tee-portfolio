@@ -184,7 +184,6 @@ export default function FluidCanvas() {
     const displaySrc = `
       precision highp float; precision highp sampler2D;
       varying vec2 vUv; varying vec2 vL; varying vec2 vR; varying vec2 vT; varying vec2 vB;
-      uniform sampler2D uTexture; 
       uniform sampler2D uVelocity;
       uniform sampler2D uContent;
       uniform float uDistortion;
@@ -194,12 +193,7 @@ export default function FluidCanvas() {
         vec2 displacedUv = vUv - vel * uDistortion;
         displacedUv = clamp(displacedUv, 0.0, 1.0);
         
-        vec4 content = texture2D(uContent, displacedUv);
-        vec3 smoke = texture2D(uTexture, displacedUv).rgb;
-        
-        // Additive blend of gold smoke on top of distorted content
-        vec3 finalColor = content.rgb + smoke * 0.25;
-        gl_FragColor = vec4(finalColor, content.a);
+        gl_FragColor = texture2D(uContent, displacedUv);
       }`;
 
     const splatFS = compileShader(GL.FRAGMENT_SHADER, `
@@ -598,16 +592,13 @@ export default function FluidCanvas() {
       const dp = config.SHADING ? dispProgShading : dispProgFlat;
       GL.useProgram(dp.p);
       
-      // Bind dye texture to unit 0
-      GL.uniform1i(dp.u.uTexture, dye.read.attach(0));
+      // Bind velocity texture to unit 0
+      GL.uniform1i(dp.u.uVelocity, velocity.read.attach(0));
 
-      // Bind velocity texture to unit 1
-      GL.uniform1i(dp.u.uVelocity, velocity.read.attach(1));
-
-      // Bind content texture to unit 2
-      GL.activeTexture(GL.TEXTURE0 + 2);
+      // Bind content texture to unit 1
+      GL.activeTexture(GL.TEXTURE0 + 1);
       GL.bindTexture(GL.TEXTURE_2D, contentTex);
-      GL.uniform1i(dp.u.uContent, 2);
+      GL.uniform1i(dp.u.uContent, 1);
 
       // Distortion strength
       GL.uniform1f(dp.u.uDistortion, 0.00015);
