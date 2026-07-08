@@ -42,9 +42,9 @@ export default function Services() {
   }, []);
 
   // Phase active states for triggering CSS transitions
-  const isP1 = progress >= 0.05 && progress < 0.35;
-  const isP2 = progress >= 0.38 && progress < 0.76;
-  const isP3 = progress >= 0.78;
+  const isP1 = progress >= 0.0 && progress < 0.35;
+  const isP2 = progress >= 0.35 && progress < 0.75;
+  const isP3 = progress >= 0.75;
 
   const phaseWrap = (active: boolean): React.CSSProperties => ({
     position: "absolute",

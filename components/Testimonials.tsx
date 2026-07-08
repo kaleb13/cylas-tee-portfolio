@@ -53,18 +53,18 @@ export default function Testimonials() {
   const sectionEntry = ss(progress, 0.05, 0.25);
   const sectionX     = `${(1 - sectionEntry) * 100}%`;
 
-  // p1: testimonials — visible after entry, pushed left by p2 (0.40→0.53)
-  const p1Out = ss(progress, 0.40, 0.53);
-  const p1X   = `${p1Out * -100}%`;
-  const p1Op  = sectionEntry > 0.05 && p1Out < 0.95 ? 1 : 0;
-
-  // p2: CTA — slides in from right (0.50→0.65)
-  const p2    = ss(progress, 0.50, 0.65);
+  // p2: CTA — slides in from right (0.42→0.58)
+  const p2    = ss(progress, 0.42, 0.58);
   const p2X   = `${(1 - p2) * 100}%`;
 
+  // p1: testimonials — visible after entry, pushed left by p2 (0.42→0.58)
+  const p1Out = ss(progress, 0.42, 0.58);
+  const p1X   = `${p1Out * -100}%`;
+  const p1Op  = sectionEntry * (1 - p2);
+
   // Phase active states for triggering CSS transitions
-  const isP1 = progress >= 0.08 && progress < 0.40;
-  const isP2 = progress >= 0.45;
+  const isP1 = progress >= 0.0 && progress < 0.50;
+  const isP2 = progress >= 0.50;
 
   const phaseStyle=(op:number,tx:string):React.CSSProperties=>({position:"absolute",inset:0,opacity:op,transform:`translateX(${tx})`,pointerEvents:op<0.05?"none":"auto",transition:"none",willChange:"transform"});
 
@@ -143,7 +143,7 @@ export default function Testimonials() {
         </div>
 
         {/* ── PHASE 2: CTA — slides in from right, pushes testimonials left ── */}
-        <div style={{...phaseStyle(p2 > 0.05 ? 1 : 0, p2X),position:"absolute",inset:0,overflow:"hidden"}}>
+        <div style={{...phaseStyle(p2, p2X),position:"absolute",inset:0,overflow:"hidden"}}>
 
 
           {/* content */}
