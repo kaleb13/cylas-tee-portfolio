@@ -270,7 +270,7 @@ export default function GoldenExpand() {
                 { separator: true },
                 { src: "/CylasTee-Home-FeaturedLogo-4.svg", alt: "Featured Logo 4", w: 120, h: 72, maxH: 72 }
               ].map((item, idx) => {
-                if (item.separator) {
+                if ('separator' in item && item.separator) {
                   return (
                     <div key={idx} style={{
                       width: "1px",
@@ -283,6 +283,8 @@ export default function GoldenExpand() {
                     }} />
                   );
                 }
+                
+                const logo = item as { src: string; alt: string; w: number; h: number; maxH: number };
                 return (
                   <div key={idx} style={{
                     flex: 1,
@@ -295,7 +297,7 @@ export default function GoldenExpand() {
                     transition: "transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease",
                     transitionDelay: `${100 + idx * 50}ms`
                   }}>
-                    <Image src={item.src} alt={item.alt} width={item.w} height={item.h} className="object-contain" style={{ maxHeight: item.maxH }} />
+                    <Image src={logo.src} alt={logo.alt} width={logo.w} height={logo.h} className="object-contain" style={{ maxHeight: logo.maxH }} />
                   </div>
                 );
               })}
