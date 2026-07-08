@@ -49,10 +49,6 @@ a {
   box-shadow: 0 0 40px rgba(174, 140, 60, 0.07);
 }
 
-.track-record-section {
-  margin-top: -42vh;
-}
-
 /* ─────────────────────────────────────────────────────────────────────────────
    RESPONSIVE — Mobile / Tablet
    Breakpoints:
@@ -133,10 +129,6 @@ a {
 }
 
 @media (max-width: 640px) {
-  .track-record-section {
-    margin-top: 0vh !important;
-  }
-
   /* Phase 2: Proven Track Record — stack vertically on phones */
   .golden-track-row {
     flex-direction: column !important;

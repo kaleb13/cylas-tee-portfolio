@@ -47,7 +47,7 @@ export default function GoldenExpand() {
   const borderRadius = 2 * (1 - expandP);
 
   // Phase active states for triggering CSS transitions
-  const isP1 = progress >= 0.05 && progress < 0.20;
+  const isP1 = progress >= 0.04 && progress < 0.20;
   const isP2 = progress >= 0.20 && progress < 0.48;
   const isP3 = progress >= 0.48 && progress < 0.74;
   const isP4 = progress >= 0.74;
@@ -84,8 +84,7 @@ export default function GoldenExpand() {
     <div
       ref={sectionRef}
       id="track-record"
-      className="track-record-section"
-      style={{ height: "390vh", backgroundColor: "#0B1014" }}
+      style={{ height: "390vh", backgroundColor: "#0B1014", marginTop: "-42vh" }}
     >
       <div
         className="sticky top-0 w-full flex items-center justify-center overflow-hidden"
