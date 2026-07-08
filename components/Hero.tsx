@@ -61,7 +61,7 @@ export default function Hero() {
 
       {/* Left text block — z-10 keeps it above the FluidCanvas */}
       <div
-        className="absolute left-0 bottom-0 z-10 flex flex-col"
+        className="hero-text-block absolute left-0 bottom-0 z-10 flex flex-col"
         style={{ padding: "0 48px 200px 48px", maxWidth: "420px", zIndex: 10 }}
       >
         <h1

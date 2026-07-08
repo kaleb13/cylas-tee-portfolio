@@ -170,6 +170,7 @@ export default function GoldenExpand() {
               transitionDelay: "0ms"
             }}>Proven Track Record</p>
             <div
+              className="golden-track-row"
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -209,7 +210,7 @@ export default function GoldenExpand() {
                   Top Rated Plus<br />On Upwork.
                 </h2>
               </div>
-              <div style={{
+              <div className="golden-divider" style={{
                 width: "1px",
                 height: "80px",
                 background: "rgba(255,255,255,0.25)",
@@ -249,6 +250,7 @@ export default function GoldenExpand() {
               transitionDelay: "0ms"
             }}>Features &amp; Accreditations</p>
             <div
+              className="golden-logos-row"
               style={{
                 display: "flex",
                 flexDirection: "row",

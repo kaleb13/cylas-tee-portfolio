@@ -84,7 +84,7 @@ export default function Testimonials() {
         {/* ── PHASE 1: Testimonials — slides in from right, pushed left by CTA ── */}
         <div style={{...phaseStyle(p1Op, p1X),display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",padding:"0 24px"}}>
           <p style={{fontSize:"11px",letterSpacing:"0.22em",textTransform:"uppercase",color:"rgba(15,15,15,0.45)",marginBottom:"20px",opacity:isP1?1:0,transform:isP1?"translateY(0)":"translateY(30px)",transition:"transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease",transitionDelay:"0ms"}}>Testimonials</p>
-          <h2 style={{fontSize:"clamp(36px,5vw,64px)",fontWeight:300,color:"#0B1014",lineHeight:1.05,letterSpacing:"-0.03em",marginBottom:"24px",opacity:isP1?1:0,transform:isP1?"translateY(0)":"translateY(30px)",transition:"transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease",transitionDelay:"100ms"}}>Words From His Clients</h2>
+          <h2 className="testimonials-heading" style={{fontSize:"clamp(36px,5vw,64px)",fontWeight:300,color:"#0B1014",lineHeight:1.05,letterSpacing:"-0.03em",marginBottom:"24px",opacity:isP1?1:0,transform:isP1?"translateY(0)":"translateY(30px)",transition:"transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease",transitionDelay:"100ms"}}>Words From His Clients</h2>
           <div style={{width:"60px",height:"1px",backgroundColor:"#AE8C3C",marginBottom:"40px",opacity:isP1?1:0,transform:isP1?"translateY(0)":"translateY(30px)",transition:"transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease",transitionDelay:"180ms"}}/>
           <div onMouseEnter={()=>setIsHovered(true)} onMouseLeave={()=>setIsHovered(false)}
             style={{position:"relative",width:"100%",height:"300px",display:"flex",justifyContent:"center",alignItems:"center",perspective:"1000px",opacity:isP1?1:0,transform:isP1?"translateY(0)":"translateY(30px)",transition:"transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease",transitionDelay:"260ms"}}>
@@ -97,6 +97,7 @@ export default function Testimonials() {
               const sc=isCenter?1:isHide?0.7:0.85,op=isCenter?1:isHide?0:0.4;
               return (
                 <div key={t.id} onClick={()=>{if(isLeft)prev();if(isRight)next();}}
+                  className="testimonial-card"
                   style={{position:"absolute",width:"clamp(300px,40vw,480px)",height:"260px",backgroundColor:"#FFFFFF",
                     boxShadow:isCenter?"0 30px 60px rgba(0,0,0,0.08),0 0 0 1px rgba(0,0,0,0.03)":"0 10px 30px rgba(0,0,0,0.04)",
                     borderRadius:"4px",padding:"32px",display:"flex",flexDirection:"column",justifyContent:"space-between",
@@ -153,10 +154,10 @@ export default function Testimonials() {
               <span style={{display:"inline-block",width:"36px",height:"1px",backgroundColor:"#AE8C3C",opacity:0.5}}/>
             </p>
 
-            <h2 style={{fontSize:"clamp(48px,9vw,108px)",fontWeight:200,color:"#0B1014",lineHeight:1.0,letterSpacing:"-0.04em",marginBottom:"10px",opacity:isP2?1:0,transform:isP2?"translateY(0)":"translateY(30px)",transition:"transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease",transitionDelay:"100ms"}}>
+            <h2 className="cta-headline" style={{fontSize:"clamp(48px,9vw,108px)",fontWeight:200,color:"#0B1014",lineHeight:1.0,letterSpacing:"-0.04em",marginBottom:"10px",opacity:isP2?1:0,transform:isP2?"translateY(0)":"translateY(30px)",transition:"transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease",transitionDelay:"100ms"}}>
               Let&apos;s create
             </h2>
-            <h2 style={{fontSize:"clamp(48px,9vw,108px)",fontWeight:200,color:"#AE8C3C",lineHeight:1.0,letterSpacing:"-0.04em",marginBottom:"44px",opacity:isP2?1:0,transform:isP2?"translateY(0)":"translateY(30px)",transition:"transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease",transitionDelay:"100ms"}}>
+            <h2 className="cta-headline" style={{fontSize:"clamp(48px,9vw,108px)",fontWeight:200,color:"#AE8C3C",lineHeight:1.0,letterSpacing:"-0.04em",marginBottom:"44px",opacity:isP2?1:0,transform:isP2?"translateY(0)":"translateY(30px)",transition:"transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease",transitionDelay:"100ms"}}>
               together.
             </h2>
 
@@ -164,7 +165,7 @@ export default function Testimonials() {
               Cylas Tee builds digital experiences that move people — from personal brands to revenue-generating funnels. One conversation is all it takes.
             </p>
 
-            <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:"28px",flexWrap:"wrap",opacity:isP2?1:0,transform:isP2?"translateY(0)":"translateY(30px)",transition:"transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease",transitionDelay:"260ms"}}>
+            <div className="cta-buttons-row" style={{display:"flex",alignItems:"center",justifyContent:"center",gap:"28px",flexWrap:"wrap",opacity:isP2?1:0,transform:isP2?"translateY(0)":"translateY(30px)",transition:"transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease",transitionDelay:"260ms"}}>
               <Link href="/contact" id="contact-cta-primary"
                 style={{display:"inline-flex",alignItems:"center",gap:"10px",padding:"18px 48px",backgroundColor:"#AE8C3C",border:"1px solid #AE8C3C",color:"#FFFFFF",fontSize:"12px",fontWeight:500,letterSpacing:"0.22em",textTransform:"uppercase",textDecoration:"none",borderRadius:"2px",transition:"all 0.4s cubic-bezier(0.16,1,0.3,1)"}}
                 onMouseOver={e=>{e.currentTarget.style.backgroundColor="#C9A84C";e.currentTarget.style.borderColor="#C9A84C";e.currentTarget.style.transform="translateY(-2px)";}}
@@ -182,7 +183,7 @@ export default function Testimonials() {
           </div>
 
           {/* bottom bar */}
-          <div style={{position:"absolute",bottom:0,left:0,right:0,display:"flex",justifyContent:"space-between",alignItems:"center",padding:"18px 48px",borderTop:"1px solid rgba(11,16,20,0.07)",flexWrap:"wrap",gap:"12px",zIndex:2,opacity:isP2?1:0,transform:isP2?"translateY(0)":"translateY(15px)",transition:"transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease",transitionDelay:"340ms"}}>
+          <div className="cta-footer-bar" style={{position:"absolute",bottom:0,left:0,right:0,display:"flex",justifyContent:"space-between",alignItems:"center",padding:"18px 48px",borderTop:"1px solid rgba(11,16,20,0.07)",flexWrap:"wrap",gap:"12px",zIndex:2,opacity:isP2?1:0,transform:isP2?"translateY(0)":"translateY(15px)",transition:"transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease",transitionDelay:"340ms"}}>
             <p style={{fontSize:"11px",color:"rgba(11,16,20,0.3)",margin:0}}>
               &copy; {new Date().getFullYear()} Cylas Tee &nbsp;&middot;&nbsp;
               <a href="#" style={{color:"inherit",textDecoration:"none"}} onMouseOver={e=>e.currentTarget.style.color="#AE8C3C"} onMouseOut={e=>e.currentTarget.style.color="rgba(11,16,20,0.3)"}>Privacy</a>

@@ -48,3 +48,182 @@ a {
   border-color: rgba(174, 140, 60, 0.40) !important;
   box-shadow: 0 0 40px rgba(174, 140, 60, 0.07);
 }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   RESPONSIVE — Mobile / Tablet
+   Breakpoints:
+     sm  ≤ 640px   (phones)
+     md  ≤ 900px   (tablets / small laptops)
+   The desktop experience (≥ 901px) is untouched.
+───────────────────────────────────────────────────────────────────────────── */
+
+/* ── Navbar ───────────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  /* Tighten side padding on nav */
+  nav[class*="fixed"] {
+    padding: 20px 24px !important;
+  }
+
+  /* Hide the centered logo on mobile/tablet — user asked for this */
+  nav[class*="fixed"] > a[aria-label="Cylas Tee Home"] {
+    display: none !important;
+  }
+
+  /* Scale hamburger label text slightly */
+  nav[class*="fixed"] button span:last-child {
+    font-size: 11px !important;
+  }
+}
+
+/* ── Full-screen Menu — mobile ─────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  /* Reduce padding in the full-screen menu */
+  .mobile-menu-nav-links {
+    padding: 0 24px 40px 24px !important;
+  }
+
+  /* Shrink the large nav link text on phones */
+  .mobile-nav-link-text {
+    font-size: 2.8rem !important;
+  }
+}
+
+/* ── Hero Section ────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  /* Hero left text block — reduce padding on tablet */
+  #home .hero-text-block {
+    padding: 0 24px 100px 24px !important;
+    max-width: 100% !important;
+  }
+}
+
+@media (max-width: 640px) {
+  /* On phones: image fills almost the full screen width and stays tall */
+  #hero-image {
+    max-width: 95vw !important;          /* nearly full viewport width */
+    width: 95vw !important;
+    aspect-ratio: 680 / 900 !important;  /* never squish — keep the portrait ratio */
+    height: auto !important;             /* height driven by aspect-ratio + width */
+    max-height: 80vh !important;         /* never taller than 80% of screen */
+  }
+
+  /* Text block: move it up close to the top navigation bar (below the mobile nav) */
+  #home .hero-text-block {
+    bottom: auto !important;
+    top: 110px !important;
+    padding: 0 20px !important;
+    max-width: 100% !important;
+  }
+
+  #hero-title {
+    font-size: clamp(24px, 6.5vw, 34px) !important;
+  }
+}
+
+/* ── GoldenExpand (Track Record section) ─────────────────────────────────── */
+@media (max-width: 900px) {
+  /* Golden panel inner phases — reduce horizontal padding */
+  #track-record .phase-inner {
+    padding: 0 24px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  /* Phase 2: Proven Track Record — stack vertically on phones */
+  .golden-track-row {
+    flex-direction: column !important;
+    gap: 20px !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  /* Hide vertical divider inside golden panel on mobile */
+  .golden-divider {
+    display: none !important;
+  }
+
+  /* Phase 3: Accreditations — stack logos */
+  .golden-logos-row {
+    flex-wrap: wrap !important;
+    gap: 20px 0 !important;
+    justify-content: center !important;
+  }
+
+  /* Phase 4: Collage — allow cards to shrink but keep ratio */
+  .golden-collage-card {
+    width: clamp(70px, 8vw, 110px) !important;
+  }
+}
+
+/* ── Services Section ────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  /* Phase 2 cards — reduce gap */
+  .services-cards-row {
+    gap: 28px !important;
+  }
+
+  /* Phase 3 vision — reduce outer padding */
+  .services-vision-wrap {
+    padding: 60px 32px 40px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  /* Phase 2 cards — stack vertically */
+  .services-cards-row {
+    flex-direction: column !important;
+    gap: 20px !important;
+    overflow-y: auto !important;
+  }
+
+  /* Phase 3 vision — hide portrait + divider, full-width text */
+  .services-vision-divider,
+  .services-vision-portrait {
+    display: none !important;
+  }
+
+  .services-vision-wrap {
+    padding: 60px 24px 40px !important;
+    flex-direction: column !important;
+  }
+}
+
+/* ── Testimonials Carousel ───────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  /* Testimonial cards should not overflow the viewport */
+  .testimonial-card {
+    width: clamp(260px, 85vw, 360px) !important;
+    height: auto !important;
+    min-height: 220px !important;
+    padding: 22px !important;
+  }
+
+  /* Reduce the "Words From His Clients" heading on phones */
+  .testimonials-heading {
+    font-size: clamp(28px, 8vw, 44px) !important;
+  }
+}
+
+/* ── CTA / "Let's Create Together" ──────────────────────────────────────── */
+@media (max-width: 640px) {
+  /* "Let's create together" — scale headline for phone screens */
+  .cta-headline {
+    font-size: clamp(36px, 12vw, 72px) !important;
+    letter-spacing: -0.02em !important;
+  }
+
+  /* CTA buttons — stack vertically */
+  .cta-buttons-row {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 16px !important;
+  }
+
+  /* Footer bar inside CTA — stack vertically */
+  .cta-footer-bar {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+    padding: 16px 20px !important;
+  }
+}

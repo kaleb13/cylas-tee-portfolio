@@ -191,7 +191,7 @@ export default function Navbar() {
           <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-[#AE8C3C]/5 rounded-full blur-[150px] pointer-events-none" />
 
           {/* Left — Nav Links (centered vertically) */}
-          <div className="flex-1 flex flex-col justify-center" style={{ padding: "0 48px 60px 48px" }}>
+          <div className="mobile-menu-nav-links flex-1 flex flex-col justify-center" style={{ padding: "0 48px 60px 48px" }}>
             <div className="flex flex-col gap-5 max-w-2xl w-full">
               {[
                 { name: "Services", num: "01", desc: "Crafting modern identity & experience" },
@@ -209,7 +209,7 @@ export default function Navbar() {
                     {item.num}
                   </span>
                   <div className="flex flex-col md:flex-row md:items-baseline md:gap-8">
-                    <span className="text-5xl md:text-7xl font-light tracking-tight text-white group-hover:translate-x-2 transition-all duration-300 relative">
+                    <span className="mobile-nav-link-text text-5xl md:text-7xl font-light tracking-tight text-white group-hover:translate-x-2 transition-all duration-300 relative">
                       {item.name}
                       <span className="absolute bottom-[-4px] left-0 h-[1px] w-0 group-hover:w-full bg-white/60 transition-all duration-500" />
                     </span>

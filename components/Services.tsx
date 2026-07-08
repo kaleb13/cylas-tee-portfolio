@@ -171,7 +171,7 @@ export default function Services() {
               Main Service Offering
             </p>
 
-            <div style={{ display: "flex", flexDirection: "row", gap: "48px" }}>
+            <div className="services-cards-row" style={{ display: "flex", flexDirection: "row", gap: "48px" }}>
 
               {/* Card 1 — Agency */}
               <div style={{
@@ -244,6 +244,7 @@ export default function Services() {
 
           {/* ── PHASE 3: Vision & Mission ───────────────────────────────── */}
           <div
+            className="services-vision-wrap"
             style={{
               position: "absolute",
               inset: 0,
@@ -354,6 +355,7 @@ export default function Services() {
 
             {/* Vertical divider */}
             <div
+              className="services-vision-divider"
               style={{
                 width: "1px",
                 height: "340px",
@@ -372,6 +374,7 @@ export default function Services() {
               alt="Cylas Tee"
               width={380}
               height={480}
+              className="services-vision-portrait"
               style={{
                 flexShrink: 0,
                 width: "clamp(240px, 28vw, 380px)",
