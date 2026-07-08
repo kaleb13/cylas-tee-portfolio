@@ -145,8 +145,18 @@ a {
   /* Phase 3: Accreditations — stack logos */
   .golden-logos-row {
     flex-wrap: wrap !important;
-    gap: 20px 0 !important;
+    gap: 24px 0 !important;
     justify-content: center !important;
+  }
+
+  .logo-separator {
+    display: none !important;
+  }
+
+  .logo-wrap {
+    flex: none !important;
+    width: 33.33% !important;
+    padding: 0 12px !important;
   }
 
   /* Phase 4: Collage — allow cards to shrink but keep ratio */

@@ -274,7 +274,7 @@ export default function GoldenExpand() {
               ].map((item, idx) => {
                 if ('separator' in item && item.separator) {
                   return (
-                    <div key={idx} style={{
+                    <div key={idx} className="logo-separator" style={{
                       width: "1px",
                       height: "56px",
                       background: "rgba(255,255,255,0.25)",
@@ -288,7 +288,7 @@ export default function GoldenExpand() {
                 
                 const logo = item as { src: string; alt: string; w: number; h: number; maxH: number };
                 return (
-                  <div key={idx} style={{
+                  <div key={idx} className="logo-wrap" style={{
                     flex: 1,
                     display: "flex",
                     justifyContent: "center",
@@ -403,11 +403,7 @@ export default function GoldenExpand() {
                 transitionDelay: "800ms"
               }}
             >
-              Cylas Tee Believes Small Businesses And Talented Individuals Drive Real Change.
-              <br />
-              With Years Of Experience And Mentorship From Industry Leaders, He Helps
-              <br />
-              Personal Brands Build, Grow, And Scale Successfully.
+              Cylas Tee Believes Small Businesses And Talented Individuals Drive Real Change. With Years Of Experience And Mentorship From Industry Leaders, He Helps Personal Brands Build, Grow, And Scale Successfully.
             </p>
           </div>
 
