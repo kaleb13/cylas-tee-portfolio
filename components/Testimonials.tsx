@@ -75,8 +75,8 @@ export default function Testimonials() {
   const bgColor = "#F4F2EE";
 
   return (
-    <div ref={sectionRef} id="testimonials" style={{height:"380vh",backgroundColor:"transparent",position:"relative",zIndex:25,marginTop:"-100vh"}}>
-      <div style={{position:"sticky",top:0,height:"100vh",width:"100%",overflow:"hidden",backgroundColor:bgColor,transform:`translateX(${sectionX})`,willChange:"transform"}}>
+    <div ref={sectionRef} id="testimonials" style={{height:"380dvh",backgroundColor:"transparent",position:"relative",zIndex:25,marginTop:"-100dvh"}}>
+      <div style={{position:"sticky",top:0,height:"100dvh",width:"100%",overflow:"hidden",backgroundColor:bgColor,transform:`translateX(${sectionX})`,willChange:"transform"}}>
 
         {/* gold top line */}
         <div style={{position:"absolute",top:0,left:0,right:0,height:"1px",background:"linear-gradient(to right,transparent,rgba(174,140,60,0.3) 50%,transparent)"}}/>

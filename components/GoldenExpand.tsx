@@ -66,7 +66,7 @@ export default function GoldenExpand() {
   const phaseStyle = (active: boolean): React.CSSProperties => ({
     position: "absolute",
     inset: 0,
-    padding: "0 72px",
+    padding: "0 clamp(16px, 6vw, 72px)",
     opacity: active ? 1 : 0,
     pointerEvents: active ? "auto" : "none",
     display: "flex",
@@ -84,11 +84,11 @@ export default function GoldenExpand() {
     <div
       ref={sectionRef}
       id="track-record"
-      style={{ height: "390vh", backgroundColor: "#0B1014", marginTop: "-42vh" }}
+      style={{ height: "390dvh", backgroundColor: "#0B1014", marginTop: "-42dvh" }}
     >
       <div
         className="sticky top-0 w-full flex items-center justify-center overflow-hidden"
-        style={{ height: "100vh", zIndex: 10, pointerEvents: "none" }}
+        style={{ height: "100dvh", zIndex: 10, pointerEvents: "none" }}
       >
         {/* ── Golden panel ─────────────────────────────────────────────── */}
         <div
@@ -96,7 +96,7 @@ export default function GoldenExpand() {
             backgroundColor: "#AE8C3C",
             borderRadius: `${borderRadius}px`,
             width: `${scaleX * 100}vw`,
-            height: `${scaleY * 100}vh`,
+            height: `${scaleY * 100}dvh`,
             position: "relative",
             overflow: "hidden",
             transition: "none",
@@ -365,7 +365,7 @@ export default function GoldenExpand() {
                     zIndex: img.z,
                     marginLeft: idx === 0
                       ? "0"
-                      : (isP4 ? "-1.8vw" : "clamp(-175px, -11vw, -115px)"),
+                      : (isP4 ? "var(--collage-margin)" : "clamp(-175px, -11vw, -115px)"),
                     width: "clamp(115px, 11vw, 175px)",
                     aspectRatio: "3/4",
                     flexShrink: 0,
@@ -373,7 +373,7 @@ export default function GoldenExpand() {
                     transition: "transform 2.0s cubic-bezier(0.16, 1, 0.3, 1), margin-left 2.0s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1)",
                     transitionDelay: isP4 ? `${200 + idx * 80}ms` : "0ms",
                   }}
-                  className="relative hover:z-50"
+                  className="relative hover:z-50 golden-collage-card"
                 >
                   <FluidImage
                     src={img.src}

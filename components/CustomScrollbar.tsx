@@ -133,6 +133,7 @@ export default function CustomScrollbar() {
   return (
     <div
       ref={trackRef}
+      className="custom-scrollbar-track"
       style={{
         position:      "fixed",
         right:         0,

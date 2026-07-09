@@ -49,7 +49,7 @@ export default function Services() {
   const phaseWrap = (active: boolean): React.CSSProperties => ({
     position: "absolute",
     inset: 0,
-    padding: "100px 48px 60px",
+    padding: "100px clamp(16px, 5vw, 48px) 60px",
     opacity: active ? 1 : 0,
     pointerEvents: active ? "auto" : "none",
     display: "flex",
@@ -63,13 +63,13 @@ export default function Services() {
     <div
       ref={sectionRef}
       id="services"
-      style={{ height: "380vh", backgroundColor: "#0B1014", position: "relative", zIndex: 20 }}
+      style={{ height: "380dvh", backgroundColor: "#0B1014", position: "relative", zIndex: 20 }}
     >
       <div
         style={{
           position: "sticky",
           top: 0,
-          height: "100vh",
+          height: "100dvh",
           width: "100%",
           overflow: "hidden",
         }}

@@ -3,6 +3,13 @@
 :root {
   --bg: #0B1014;
   --gold: #AE8C3C;
+  --collage-margin: -1.8vw;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --collage-margin: -7vw;
+  }
 }
 
 * {
@@ -26,7 +33,7 @@ body {
   color: #fff;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   font-weight: 300;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 /* ── Global link reset ──────────────────────────────────────────────────────── */
@@ -73,6 +80,11 @@ a {
   nav[class*="fixed"] button span:last-child {
     font-size: 11px !important;
   }
+
+  /* Hide custom scrollbar on mobile/tablet */
+  .custom-scrollbar-track {
+    display: none !important;
+  }
 }
 
 /* ── Full-screen Menu — mobile ─────────────────────────────────────────────── */
@@ -104,7 +116,7 @@ a {
     width: 95vw !important;
     aspect-ratio: 680 / 900 !important;  /* never squish — keep the portrait ratio */
     height: auto !important;             /* height driven by aspect-ratio + width */
-    max-height: 80vh !important;         /* never taller than 80% of screen */
+    max-height: 80dvh !important;         /* never taller than 80% of screen */
   }
 
   /* Text block: move it up close to the top navigation bar (below the mobile nav) */

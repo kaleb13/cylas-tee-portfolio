@@ -12,7 +12,7 @@ export default function Hero() {
     <section
       id="home"
       className="relative w-full"
-      style={{ height: "110vh", backgroundColor: "#0B1014" }}
+      style={{ height: "110dvh", backgroundColor: "#0B1014" }}
     >
       {/* Fluid distortion overlay — absolute within section so it scrolls naturally */}
       <FluidCanvas />
@@ -42,7 +42,7 @@ export default function Hero() {
         id="hero-image"
         className="absolute bottom-0 left-1/2 -translate-x-1/2 pointer-events-none"
         style={{
-          height: "calc(110vh - 110px)",
+          height: "calc(110dvh - 110px)",
           maxHeight: "800px",
           maxWidth: "min(600px, 65vw)",
           aspectRatio: "680 / 900",

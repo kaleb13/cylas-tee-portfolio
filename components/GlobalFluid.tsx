@@ -19,8 +19,8 @@ export default function GlobalFluid() {
         inset: 0,
         zIndex: 5,          // above background, below all content
         pointerEvents: "none",
-        width: "100vw",
-        height: "100vh",
+        width: "100%",
+        height: "100dvh",
       }}
       aria-hidden="true"
     >

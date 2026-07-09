@@ -121,7 +121,7 @@ export default function ContactCTA() {
       style={{
         position: "relative",
         width: "100%",
-        minHeight: "100vh",
+        minHeight: "100dvh",
         overflow: "hidden",
         // White/warm background so the donut glows through the frosted glass
         backgroundColor: "#FAFAF8",
