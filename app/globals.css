@@ -51,9 +51,11 @@ a {
 .service-card {
   transition: border-color 0.35s ease, box-shadow 0.35s ease !important;
 }
-.service-card:hover {
-  border-color: rgba(174, 140, 60, 0.40) !important;
-  box-shadow: 0 0 40px rgba(174, 140, 60, 0.07);
+@media (hover: hover) {
+  .service-card:hover {
+    border-color: rgba(174, 140, 60, 0.40) !important;
+    box-shadow: 0 0 40px rgba(174, 140, 60, 0.07);
+  }
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
@@ -198,6 +200,13 @@ a {
     overflow-y: auto !important;
   }
 
+  .service-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    padding: 32px 24px !important;
+  }
+
   /* Phase 3 vision — hide portrait + divider, full-width text */
   .services-vision-divider,
   .services-vision-portrait {
@@ -218,6 +227,10 @@ a {
     height: auto !important;
     min-height: 220px !important;
     padding: 22px !important;
+  }
+
+  .testimonial-card:not(.active-card) {
+    display: none !important;
   }
 
   /* Reduce the "Words From His Clients" heading on phones */

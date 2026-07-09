@@ -670,10 +670,12 @@ export default function FluidCanvas() {
     };
 
     const onMouseMove = (e: MouseEvent) => {
+      if (window.innerWidth <= 640) return;
       const rect = canvas.getBoundingClientRect();
       updatePointer(e.clientX - rect.left, e.clientY - rect.top);
     };
     const onTouchMove = (e: TouchEvent) => {
+      if (window.innerWidth <= 640) return;
       const t = e.touches[0];
       const rect = canvas.getBoundingClientRect();
       updatePointer(t.clientX - rect.left, t.clientY - rect.top);

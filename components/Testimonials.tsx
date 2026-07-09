@@ -97,7 +97,7 @@ export default function Testimonials() {
               const sc=isCenter?1:isHide?0.7:0.85,op=isCenter?1:isHide?0:0.4;
               return (
                 <div key={t.id} onClick={()=>{if(isLeft)prev();if(isRight)next();}}
-                  className="testimonial-card"
+                  className={`testimonial-card ${isCenter ? "active-card" : ""}`}
                   style={{position:"absolute",width:"clamp(300px,40vw,480px)",height:"260px",backgroundColor:"#FFFFFF",
                     boxShadow:isCenter?"0 30px 60px rgba(0,0,0,0.08),0 0 0 1px rgba(0,0,0,0.03)":"0 10px 30px rgba(0,0,0,0.04)",
                     borderRadius:"4px",padding:"32px",display:"flex",flexDirection:"column",justifyContent:"space-between",
