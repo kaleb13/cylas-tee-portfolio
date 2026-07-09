@@ -86,8 +86,7 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className="fixed top-0 left-0 w-full z-50 flex items-center justify-between"
-        style={{ padding: "28px 48px" }}
+        className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-5 py-5 sm:px-8 md:px-12 md:py-7"
       >
         {/* Animated Hamburger Menu Button */}
         <button
@@ -183,7 +182,7 @@ export default function Navbar() {
       {/* Full Screen Minimalist Menu */}
       {menuOpen && (
         <div
-          className="fixed inset-0 w-screen h-screen z-40 bg-[#0B1014]/95 backdrop-blur-xl flex animate-fade-in"
+          className="fixed inset-0 w-full min-h-[100dvh] z-40 bg-[#0B1014]/95 backdrop-blur-xl flex animate-fade-in"
           style={{ padding: "100px 0 0 0" }}
         >
           {/* Subtle background glow circles */}

@@ -22,6 +22,7 @@ html {
   scroll-behavior: smooth;
   scrollbar-width: none;        /* Firefox */
   -ms-overflow-style: none;     /* IE/Edge */
+  overflow-x: clip;             /* Prevent horizontal scroll at root — no scroll container created */
 }
 
 html::-webkit-scrollbar {
@@ -68,12 +69,7 @@ a {
 
 /* ── Navbar ───────────────────────────────────────────────────────────────── */
 @media (max-width: 900px) {
-  /* Tighten side padding on nav */
-  nav[class*="fixed"] {
-    padding: 20px 24px !important;
-  }
-
-  /* Hide the centered logo on mobile/tablet — user asked for this */
+  /* Hide the centered logo on mobile/tablet */
   nav[class*="fixed"] > a[aria-label="Cylas Tee Home"] {
     display: none !important;
   }

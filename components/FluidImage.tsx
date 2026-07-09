@@ -464,7 +464,7 @@ export default function FluidImage({ src, alt, width, height, style, className }
   }, []);
 
   return (
-    <div ref={containerRef} style={{ position: "relative", display: "block", ...style }} className={className}>
+    <div ref={containerRef} style={{ position: "relative", display: "block", overflow: "hidden", ...style }} className={className}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         ref={imgRef}
