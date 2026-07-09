@@ -50,7 +50,7 @@ export default function Hero() {
         }}
       >
         <Image
-          src="/cylas-tee.png"
+          src="/cylas-tee.webp"
           alt="Cylas Tee"
           width={600}
           height={794}

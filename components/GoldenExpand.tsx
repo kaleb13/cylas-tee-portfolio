@@ -347,14 +347,14 @@ export default function GoldenExpand() {
               }}
             >
               {[
-                { src: "/C1.png", rot: -6, y: 20, z: 10 },
-                { src: "/C2.png", rot: 4, y: -5, z: 20 },
-                { src: "/C3.png", rot: -8, y: -20, z: 30 },
-                { src: "/C4.png", rot: 6, y: -35, z: 40 },
-                { src: "/C5.png", rot: -5, y: -25, z: 30 },
-                { src: "/C6.png", rot: 7, y: -10, z: 20 },
-                { src: "/C7.png", rot: -6, y: 5, z: 10 },
-                { src: "/C8.png", rot: 8, y: 25, z: 0 },
+                { src: "/C1.webp", rot: -6, y: 20, z: 10 },
+                { src: "/C2.webp", rot: 4, y: -5, z: 20 },
+                { src: "/C3.webp", rot: -8, y: -20, z: 30 },
+                { src: "/C4.webp", rot: 6, y: -35, z: 40 },
+                { src: "/C5.webp", rot: -5, y: -25, z: 30 },
+                { src: "/C6.webp", rot: 7, y: -10, z: 20 },
+                { src: "/C7.webp", rot: -6, y: 5, z: 10 },
+                { src: "/C8.webp", rot: 8, y: 25, z: 0 },
               ].map((img, idx) => (
                 <div
                   key={idx}

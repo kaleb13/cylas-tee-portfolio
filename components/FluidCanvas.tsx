@@ -494,7 +494,7 @@ export default function FluidCanvas() {
 
     const img = typeof window !== "undefined" ? new Image() : null;
     if (img) {
-      img.src = "/cylas-tee.png";
+      img.src = "/cylas-tee.webp";
     }
 
     const updateContent = () => {

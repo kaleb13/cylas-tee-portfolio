@@ -370,7 +370,7 @@ export default function Services() {
 
             {/* Right — portrait image */}
             <FluidImage
-              src="/Cylas Tee 2.png"
+              src="/Cylas Tee 2.webp"
               alt="Cylas Tee"
               width={380}
               height={480}
