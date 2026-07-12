@@ -27,9 +27,8 @@ export default function GoldenExpand() {
       const el = sectionRef.current;
       if (!el) return;
       const rect = el.getBoundingClientRect();
-      const sectionH = el.offsetHeight;
       const viewH = window.innerHeight;
-      const scrollable = sectionH - viewH;
+      const scrollable = 2.9 * viewH;
       const scrolled = -rect.top;
       setProgress(clamp(scrolled / scrollable));
     };
@@ -46,11 +45,19 @@ export default function GoldenExpand() {
   const scaleY = 0.42 + (1 - 0.42) * expandP;
   const borderRadius = 2 * (1 - expandP);
 
-  // Phase active states for triggering CSS transitions
-  const isP1 = progress >= 0.04 && progress < 0.20;
-  const isP2 = progress >= 0.20 && progress < 0.48;
-  const isP3 = progress >= 0.48 && progress < 0.74;
-  const isP4 = progress >= 0.74;
+  // ── No fade to dark section transition ──────────────
+  const panelBgColor = "#AE8C3C";
+  const p4ContentOpacity = 1;
+
+  // Phase active states — thresholds aligned to scroll-snap target positions:
+  //   snap at 55dvh  → progress ≈ 0.19  (P1 start)
+  //   snap at 110dvh → progress ≈ 0.38  (P2 start)
+  //   snap at 168dvh → progress ≈ 0.58  (P3 start)
+  //   snap at 220dvh → progress ≈ 0.76  (P4 start)
+  const isP1 = progress >= 0.19 && progress < 0.38;
+  const isP2 = progress >= 0.38 && progress < 0.58;
+  const isP3 = progress >= 0.58 && progress < 0.76;
+  const isP4 = progress >= 0.76;
 
   // Shared label style
   const labelStyle: React.CSSProperties = {
@@ -84,8 +91,19 @@ export default function GoldenExpand() {
     <div
       ref={sectionRef}
       id="track-record"
-      style={{ height: "390dvh", backgroundColor: "#0B1014", marginTop: "-42dvh" }}
+      style={{ height: "590dvh", backgroundColor: "#0B1014", marginTop: "-42dvh", position: "relative" }}
     >
+      {/* Scroll Snap Targets — positions tuned to match phase thresholds:
+           P1(About)      progress ~0.19 → scrolled = 0.19 * 290vh ≈ 55dvh
+           P2(TrackRec)   progress ~0.38 → scrolled = 0.38 * 290vh ≈ 110dvh
+           P3(Features)   progress ~0.58 → scrolled = 0.58 * 290vh ≈ 168dvh
+           P4(Focus)      progress ~0.76 → scrolled = 0.76 * 290vh ≈ 220dvh */}
+      <div className="scroll-snap-target" style={{ position: "absolute", top: "0dvh", left: 0, width: "1px", height: "1px", pointerEvents: "none" }} />
+      <div className="scroll-snap-target" style={{ position: "absolute", top: "55dvh", left: 0, width: "1px", height: "1px", pointerEvents: "none" }} />
+      <div className="scroll-snap-target" style={{ position: "absolute", top: "110dvh", left: 0, width: "1px", height: "1px", pointerEvents: "none" }} />
+      <div className="scroll-snap-target" style={{ position: "absolute", top: "168dvh", left: 0, width: "1px", height: "1px", pointerEvents: "none" }} />
+      <div className="scroll-snap-target" style={{ position: "absolute", top: "220dvh", left: 0, width: "1px", height: "1px", pointerEvents: "none" }} />
+
       <div
         className="sticky top-0 w-full flex items-center justify-center overflow-hidden"
         style={{ height: "100dvh", zIndex: 10, pointerEvents: "none" }}
@@ -93,7 +111,7 @@ export default function GoldenExpand() {
         {/* ── Golden panel ─────────────────────────────────────────────── */}
         <div
           style={{
-            backgroundColor: "#AE8C3C",
+            backgroundColor: panelBgColor,
             borderRadius: `${borderRadius}px`,
             width: `${scaleX * 100}vw`,
             height: `${scaleY * 100}dvh`,
@@ -307,7 +325,11 @@ export default function GoldenExpand() {
           </div>
 
           {/* ── PHASE 4: Primary Focus — Passion For Personal Brands (Collage) ── */}
-          <div style={phaseStyle(isP4)}>
+          <div style={{
+            ...phaseStyle(isP4),
+            opacity: isP4 ? 1 : 0,
+            transition: "opacity 0.6s ease",
+          }}>
             <p style={{
               ...labelStyle,
               opacity: isP4 ? 1 : 0,

@@ -23,6 +23,12 @@ html {
   scrollbar-width: none;        /* Firefox */
   -ms-overflow-style: none;     /* IE/Edge */
   overflow-x: clip;             /* Prevent horizontal scroll at root — no scroll container created */
+  scroll-snap-type: y mandatory;
+}
+
+.scroll-snap-target {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
 html::-webkit-scrollbar {
@@ -68,20 +74,44 @@ a {
 ───────────────────────────────────────────────────────────────────────────── */
 
 /* ── Navbar ───────────────────────────────────────────────────────────────── */
+.navbar-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 28px 48px !important; /* desktop: py-7 (28px), px-12 (48px) */
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 @media (max-width: 900px) {
+  .navbar-container {
+    padding: 20px 32px !important; /* tablet: py-5 (20px), px-8 (32px) */
+  }
+
   /* Hide the centered logo on mobile/tablet */
-  nav[class*="fixed"] > a[aria-label="Cylas Tee Home"] {
+  .navbar-container > a[aria-label="Cylas Tee Home"] {
     display: none !important;
   }
 
   /* Scale hamburger label text slightly */
-  nav[class*="fixed"] button span:last-child {
+  .navbar-container button span:last-child {
     font-size: 11px !important;
   }
 
   /* Hide custom scrollbar on mobile/tablet */
   .custom-scrollbar-track {
     display: none !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .navbar-container {
+    padding: 20px 20px !important; /* mobile: py-5 (20px), px-5 (20px) */
   }
 }
 

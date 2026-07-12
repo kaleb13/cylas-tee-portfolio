@@ -48,25 +48,17 @@ export default function Testimonials() {
 
   /* phases */
 
-  // Section entry: white panel slides in from right, timed with Services pushing left
-  // Testimonials starts at -100vh overlap; entry 0.05→0.25 of its own progress
-  const sectionEntry = ss(progress, 0.05, 0.25);
-  const sectionX     = `${(1 - sectionEntry) * 100}%`;
-
-  // p2: CTA — slides in from right (0.42→0.58)
+  // p2: CTA — fades in (0.42→0.58)
   const p2    = ss(progress, 0.42, 0.58);
-  const p2X   = `${(1 - p2) * 100}%`;
 
-  // p1: testimonials — visible after entry, pushed left by p2 (0.42→0.58)
-  const p1Out = ss(progress, 0.42, 0.58);
-  const p1X   = `${p1Out * -100}%`;
-  const p1Op  = sectionEntry * (1 - p2);
+  // p1: testimonials — visible after entry, fades out when p2 (CTA) fades in
+  const p1Op  = 1 - p2;
 
   // Phase active states for triggering CSS transitions
   const isP1 = progress >= 0.0 && progress < 0.50;
   const isP2 = progress >= 0.50;
 
-  const phaseStyle=(op:number,tx:string):React.CSSProperties=>({position:"absolute",inset:0,opacity:op,transform:`translateX(${tx})`,pointerEvents:op<0.05?"none":"auto",transition:"none",willChange:"transform"});
+  const phaseStyle=(op:number):React.CSSProperties=>({position:"absolute",inset:0,opacity:op,pointerEvents:op<0.05?"none":"auto",transition:"none",willChange:"opacity"});
 
   const next=()=>setCurrentIndex(p=>(p+1)%N);
   const prev=()=>setCurrentIndex(p=>(p-1+N)%N);
@@ -76,13 +68,17 @@ export default function Testimonials() {
 
   return (
     <div ref={sectionRef} id="testimonials" style={{height:"380dvh",backgroundColor:"transparent",position:"relative",zIndex:25,marginTop:"-100dvh"}}>
-      <div style={{position:"sticky",top:0,height:"100dvh",width:"100%",overflow:"hidden",backgroundColor:bgColor,transform:`translateX(${sectionX})`,willChange:"transform"}}>
+      {/* Scroll Snap Targets for each Phase */}
+      <div className="scroll-snap-target" style={{ position: "absolute", top: "84dvh", left: 0, width: "1px", height: "1px", pointerEvents: "none" }} />
+      <div className="scroll-snap-target" style={{ position: "absolute", top: "280dvh", left: 0, width: "1px", height: "1px", pointerEvents: "none" }} />
+
+      <div style={{position:"sticky",top:0,height:"100dvh",width:"100%",overflow:"hidden",backgroundColor:bgColor,opacity:1,willChange:"opacity"}}>
 
         {/* gold top line */}
         <div style={{position:"absolute",top:0,left:0,right:0,height:"1px",background:"linear-gradient(to right,transparent,rgba(174,140,60,0.3) 50%,transparent)"}}/>
 
-        {/* ── PHASE 1: Testimonials — slides in from right, pushed left by CTA ── */}
-        <div style={{...phaseStyle(p1Op, p1X),display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",padding:"0 24px"}}>
+        {/* ── PHASE 1: Testimonials ── */}
+        <div style={{...phaseStyle(p1Op),display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",padding:"0 24px"}}>
           <p style={{fontSize:"11px",letterSpacing:"0.22em",textTransform:"uppercase",color:"rgba(15,15,15,0.45)",marginBottom:"20px",opacity:isP1?1:0,transform:isP1?"translateY(0)":"translateY(30px)",transition:"transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease",transitionDelay:"0ms"}}>Testimonials</p>
           <h2 className="testimonials-heading" style={{fontSize:"clamp(36px,5vw,64px)",fontWeight:300,color:"#0B1014",lineHeight:1.05,letterSpacing:"-0.03em",marginBottom:"24px",opacity:isP1?1:0,transform:isP1?"translateY(0)":"translateY(30px)",transition:"transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease",transitionDelay:"100ms"}}>Words From His Clients</h2>
           <div style={{width:"60px",height:"1px",backgroundColor:"#AE8C3C",marginBottom:"40px",opacity:isP1?1:0,transform:isP1?"translateY(0)":"translateY(30px)",transition:"transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease",transitionDelay:"180ms"}}/>
@@ -142,8 +138,8 @@ export default function Testimonials() {
           </div>
         </div>
 
-        {/* ── PHASE 2: CTA — slides in from right, pushes testimonials left ── */}
-        <div style={{...phaseStyle(p2, p2X),position:"absolute",inset:0,overflow:"hidden"}}>
+        {/* ── PHASE 2: CTA ── */}
+        <div style={{...phaseStyle(p2),position:"absolute",inset:0,overflow:"hidden"}}>
 
 
           {/* content */}

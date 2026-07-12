@@ -1,12 +1,26 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function CustomCursor() {
   const dotRef  = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(true);
 
   useEffect(() => {
+    const checkMobile = () => {
+      const isMob = 
+        /Mobi|Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent) || 
+        window.innerWidth < 1024 ||
+        (window.matchMedia && window.matchMedia("(any-pointer: coarse)").matches);
+      setIsMobile(isMob);
+    };
+    checkMobile();
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) return;
+
     const dot  = dotRef.current;
     const ring = ringRef.current;
     if (!dot || !ring) return;
@@ -77,7 +91,9 @@ export default function CustomCursor() {
       window.removeEventListener("mouseup", onUp);
       observer.disconnect();
     };
-  }, []);
+  }, [isMobile]);
+
+  if (isMobile) return null;
 
   return (
     <>

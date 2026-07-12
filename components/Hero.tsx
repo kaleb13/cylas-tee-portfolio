@@ -2,26 +2,45 @@
 
 import Image from "next/image";
 import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
 import SiteLink from "./SiteLink";
 
 // Load FluidCanvas client-side only (WebGL)
 const FluidCanvas = dynamic(() => import("./FluidCanvas"), { ssr: false });
 
 export default function Hero() {
+  const [isMobile, setIsMobile] = useState(true);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      const isMob = 
+        /Mobi|Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent) || 
+        window.innerWidth < 1024 ||
+        (window.matchMedia && window.matchMedia("(any-pointer: coarse)").matches);
+      setIsMobile(isMob);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   return (
     <section
       id="home"
-      className="relative w-full"
-      style={{ height: "110dvh", backgroundColor: "#0B1014" }}
+      className="relative w-full scroll-snap-target"
+      style={{ height: "110dvh", backgroundColor: "#0B1014", zIndex: 2 }}
     >
       {/* Fluid distortion overlay — absolute within section so it scrolls naturally */}
-      <FluidCanvas />
+      {!isMobile && <FluidCanvas />}
 
       {/* Watermark */}
       <div
         className="absolute inset-0 flex items-center justify-center select-none pointer-events-none overflow-hidden"
         aria-hidden="true"
-        style={{ opacity: 0 }}
+        style={{ 
+          opacity: isMobile ? 1 : 0,
+          transition: "opacity 0.5s ease" 
+        }}
       >
         <span
           style={{
@@ -46,7 +65,8 @@ export default function Hero() {
           maxHeight: "800px",
           maxWidth: "min(600px, 65vw)",
           aspectRatio: "680 / 900",
-          opacity: 0,
+          opacity: isMobile ? 1 : 0,
+          transition: "opacity 0.5s ease"
         }}
       >
         <Image
@@ -67,7 +87,11 @@ export default function Hero() {
         <h1
           id="hero-title"
           className="font-normal leading-tight mb-5 text-white"
-          style={{ fontSize: "clamp(32px, 3.8vw, 46px)", opacity: 0 }}
+          style={{ 
+            fontSize: "clamp(32px, 3.8vw, 46px)", 
+            opacity: isMobile ? 1 : 0,
+            transition: "opacity 0.5s ease"
+          }}
         >
           Create Your Website Today
         </h1>

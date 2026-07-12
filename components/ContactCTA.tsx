@@ -33,6 +33,7 @@ export default function ContactCTA() {
     if (!ctx) return;
 
     let t = 0;
+    let isVisible = false;
 
     const resize = () => {
       canvas.width  = canvas.offsetWidth;
@@ -41,7 +42,17 @@ export default function ContactCTA() {
     resize();
     window.addEventListener("resize", resize);
 
+    const isMobileDevice = 
+      /Mobi|Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent) || 
+      window.innerWidth < 1024 ||
+      (window.matchMedia && window.matchMedia("(any-pointer: coarse)").matches);
+
+    const RINGS = isMobileDevice ? 28 : 56;
+    const TUBE  = isMobileDevice ? 14 : 28;
+
     const draw = () => {
+      if (!isVisible) return;
+
       const w = canvas.width;
       const h = canvas.height;
       ctx.clearRect(0, 0, w, h);
@@ -57,8 +68,6 @@ export default function ContactCTA() {
 
       const R = Math.min(w, h) * 0.28;  // major radius
       const r = R * 0.38;               // tube radius
-      const RINGS = 56;
-      const TUBE  = 28;
 
       for (let i = 0; i < RINGS; i++) {
         const theta = (i / RINGS) * Math.PI * 2 + t * 0.35;
@@ -108,9 +117,24 @@ export default function ContactCTA() {
       rafRef.current = requestAnimationFrame(draw);
     };
 
-    draw();
+    // Use IntersectionObserver to pause loop when section is offscreen
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+        if (isVisible) {
+          cancelAnimationFrame(rafRef.current);
+          draw();
+        } else {
+          cancelAnimationFrame(rafRef.current);
+        }
+      },
+      { threshold: 0.01 }
+    );
+    observer.observe(canvas);
+
     return () => {
       cancelAnimationFrame(rafRef.current);
+      observer.disconnect();
       window.removeEventListener("resize", resize);
     };
   }, []);

@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface FluidImageProps {
   src: string;
@@ -14,8 +14,20 @@ export default function FluidImage({ src, alt, width, height, style, className }
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef    = useRef<HTMLCanvasElement>(null);
   const imgRef       = useRef<HTMLImageElement>(null);
+  const [useStatic, setUseStatic] = useState(false);
 
   useEffect(() => {
+    const isMobileDevice = 
+      /Mobi|Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent) || 
+      window.innerWidth < 1024 ||
+      (window.matchMedia && window.matchMedia("(any-pointer: coarse)").matches);
+      
+    setUseStatic(isMobileDevice);
+  }, []);
+
+  useEffect(() => {
+    if (useStatic) return;
+
     const canvas = canvasRef.current;
     const imgEl  = imgRef.current;
     const container = containerRef.current;
@@ -293,11 +305,15 @@ export default function FluidImage({ src, alt, width, height, style, className }
     GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_S, GL.CLAMP_TO_EDGE);
     GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_T, GL.CLAMP_TO_EDGE);
 
+    let contentUploaded = false;
     const uploadContent = () => {
       if (!imgEl.complete || imgEl.naturalWidth === 0) return;
       GL.pixelStorei(GL.UNPACK_FLIP_Y_WEBGL, true);
       GL.bindTexture(GL.TEXTURE_2D, contentTex);
-      try { GL.texImage2D(GL.TEXTURE_2D, 0, GL.RGBA, GL.RGBA, GL.UNSIGNED_BYTE, imgEl); } catch(_) {}
+      try { 
+        GL.texImage2D(GL.TEXTURE_2D, 0, GL.RGBA, GL.RGBA, GL.UNSIGNED_BYTE, imgEl); 
+        contentUploaded = true;
+      } catch(_) {}
     };
 
     if (imgEl.complete) uploadContent();
@@ -417,6 +433,10 @@ export default function FluidImage({ src, alt, width, height, style, className }
       const dt = Math.min((now - lastTime) / 1000, 0.016666);
       lastTime = now;
 
+      if (!contentUploaded) {
+        uploadContent();
+      }
+
       resizeCanvas();
 
       if (ptr.moved && active) {
@@ -461,7 +481,7 @@ export default function FluidImage({ src, alt, width, height, style, className }
       window.removeEventListener("mousemove", onMove);
       GL.deleteTexture(contentTex);
     };
-  }, []);
+  }, [useStatic]);
 
   return (
     <div ref={containerRef} style={{ position: "relative", display: "block", overflow: "hidden", ...style }} className={className}>
@@ -472,22 +492,30 @@ export default function FluidImage({ src, alt, width, height, style, className }
         alt={alt}
         width={width}
         height={height}
-        style={{ width: "100%", height: "auto", display: "block", opacity: 0 }}
+        style={{ 
+          width: "100%", 
+          height: "auto", 
+          display: "block", 
+          opacity: useStatic ? 1 : 0,
+          transition: "opacity 0.5s ease"
+        }}
         crossOrigin="anonymous"
       />
-      <canvas
-        ref={canvasRef}
-        style={{
-          position: "absolute",
-          top: "-150px",
-          left: "-150px",
-          width: "calc(100% + 300px)",
-          height: "calc(100% + 300px)",
-          pointerEvents: "none",
-          zIndex: 5,
-        }}
-        aria-hidden="true"
-      />
+      {!useStatic && (
+        <canvas
+          ref={canvasRef}
+          style={{
+            position: "absolute",
+            top: "-150px",
+            left: "-150px",
+            width: "calc(100% + 300px)",
+            height: "calc(100% + 300px)",
+            pointerEvents: "none",
+            zIndex: 5,
+          }}
+          aria-hidden="true"
+        />
+      )}
     </div>
   );
 }

@@ -32,8 +32,9 @@ export default function Services() {
       const el = sectionRef.current;
       if (!el) return;
       const rect = el.getBoundingClientRect();
-      const scrollable = el.offsetHeight - window.innerHeight;
-      const p = clamp(-rect.top / Math.max(scrollable, 1));
+      const viewH = window.innerHeight;
+      const scrollable = 2.8 * viewH;
+      const p = clamp(-rect.top / scrollable);
       setProgress(p);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -42,9 +43,9 @@ export default function Services() {
   }, []);
 
   // Phase active states for triggering CSS transitions
-  const isP1 = progress >= 0.0 && progress < 0.35;
-  const isP2 = progress >= 0.35 && progress < 0.75;
-  const isP3 = progress >= 0.75;
+  const isP1 = progress >= 0.0 && progress < 0.40;
+  const isP2 = progress >= 0.40 && progress < 0.80;
+  const isP3 = progress >= 0.80;
 
   const phaseWrap = (active: boolean): React.CSSProperties => ({
     position: "absolute",
@@ -63,8 +64,13 @@ export default function Services() {
     <div
       ref={sectionRef}
       id="services"
-      style={{ height: "380dvh", backgroundColor: "#0B1014", position: "relative", zIndex: 20 }}
+      style={{ height: "580dvh", backgroundColor: "#0B1014", position: "relative", zIndex: 20, marginTop: "-100dvh" }}
     >
+      {/* Scroll Snap Targets for each Phase */}
+      <div className="scroll-snap-target" style={{ position: "absolute", top: "0dvh", left: 0, width: "1px", height: "1px", pointerEvents: "none" }} />
+      <div className="scroll-snap-target" style={{ position: "absolute", top: "140dvh", left: 0, width: "1px", height: "1px", pointerEvents: "none" }} />
+      <div className="scroll-snap-target" style={{ position: "absolute", top: "280dvh", left: 0, width: "1px", height: "1px", pointerEvents: "none" }} />
+
       <div
         style={{
           position: "sticky",
@@ -168,7 +174,7 @@ export default function Services() {
               transition: "transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease",
               transitionDelay: "0ms"
             }}>
-              Main Service Offering
+              How We Can Help
             </p>
 
             <div className="services-cards-row" style={{ display: "flex", flexDirection: "row", gap: "48px" }}>

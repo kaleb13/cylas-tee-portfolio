@@ -42,24 +42,10 @@ export default function Navbar() {
       const easeP = ease(p);
       const scaleY = 0.42 + (1 - 0.42) * easeP;
 
-      // Calculate panel top and bottom relative to viewport
-      let panelTop = 0;
-      let panelBottom = 0;
-
-      if (rect.top > 0) {
-        panelTop = rect.top + (1 - scaleY) / 2 * viewH;
-        panelBottom = rect.top + (1 + scaleY) / 2 * viewH;
-      } else if (rect.bottom < viewH) {
-        panelTop = rect.bottom - viewH + (1 - scaleY) / 2 * viewH;
-        panelBottom = rect.bottom - viewH + (1 + scaleY) / 2 * viewH;
-      } else {
-        panelTop = (1 - scaleY) / 2 * viewH;
-        panelBottom = (1 + scaleY) / 2 * viewH;
-      }
-
-      // logo is at top of viewport (y: 0 to 58).
-      // So logo is covered if panelTop <= 28 && panelBottom >= 58
-      const isCoveringLogo = panelTop <= 28 && panelBottom >= 58;
+      // logo is at the top of the viewport.
+      // Trigger the golden logo color change immediately once the golden section starts expanding (rect.top <= 0)
+      // and keep it until we transition out at the end of the golden section (progress <= 0.88)
+      const isCoveringLogo = rect.top <= 0 && rect.bottom >= 58 && p <= 0.88;
       setIsGoldenFullscreen(isCoveringLogo);
 
       // Check if testimonials (light section) is under the navbar
@@ -85,9 +71,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav
-        className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-5 py-5 sm:px-8 md:px-12 md:py-7"
-      >
+      <nav className="navbar-container">
         {/* Animated Hamburger Menu Button */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
